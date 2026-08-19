@@ -1,0 +1,69 @@
+backend:
+  name: git-gateway
+  branch: main
+
+media_folder: public/images
+public_folder: /images
+
+locale: ja
+
+collections:
+  - name: "settings"
+    label: "コンテンツ編集"
+    files:
+      - name: "content"
+        label: "サイト全体のコンテンツ"
+        file: "src/data/content.json"
+        fields:
+
+          - label: "ヒーローセクション"
+            name: "hero"
+            widget: "object"
+            fields:
+              - { label: "タイトル", name: "title", widget: "string" }
+              - { label: "サブタイトル（\\nで改行）", name: "subtitle", widget: "string" }
+              - { label: "ボタンテキスト", name: "button", widget: "string" }
+
+          - label: "ミッションセクション"
+            name: "mission"
+            widget: "object"
+            fields:
+              - { label: "ラベル", name: "label", widget: "string" }
+              - { label: "タイトル（\\nで改行）", name: "title", widget: "string" }
+              - { label: "本文1", name: "body1", widget: "text" }
+              - { label: "本文2", name: "body2", widget: "text" }
+
+          - label: "サービス紹介文"
+            name: "services_intro"
+            widget: "text"
+
+          - label: "サービス"
+            name: "services"
+            widget: "list"
+            fields:
+              - { label: "英語名", name: "name_en", widget: "string" }
+              - { label: "日本語名", name: "name_jp", widget: "string" }
+              - { label: "タグ", name: "tag", widget: "string" }
+              - { label: "説明文", name: "description", widget: "text" }
+              - { label: "画像", name: "image", widget: "image" }
+
+          - label: "メンバー"
+            name: "team"
+            widget: "list"
+            fields:
+              - { label: "氏名（日本語）", name: "name_jp", widget: "string" }
+              - { label: "氏名（英語）", name: "name_en", widget: "string" }
+              - { label: "役職", name: "role", widget: "string" }
+              - { label: "プロフィール", name: "bio", widget: "text" }
+              - { label: "写真", name: "image", widget: "image" }
+
+          - label: "会社概要"
+            name: "company"
+            widget: "object"
+            fields:
+              - { label: "会社名", name: "name", widget: "string" }
+              - { label: "所在地", name: "address", widget: "string" }
+              - { label: "設立", name: "founded", widget: "string" }
+              - { label: "代表", name: "ceo", widget: "string" }
+              - { label: "事業内容（\\nで改行）", name: "services", widget: "text" }
+              - { label: "メールアドレス", name: "email", widget: "string" }
