@@ -1,0 +1,1105 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ShareLocals | The Future of Travel</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@300;400;500;600&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Noto+Sans+JP:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --cream: #F7F3EE;
+      --cream-dark: #EDE6DC;
+      --text: #1C1712;
+      --text-light: #5C5248;
+      --accent: #8B6F5C;
+      --white: #FFFFFF;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: 'Noto Sans JP', sans-serif;
+      color: var(--text);
+      background: var(--cream);
+      font-weight: 300;
+      line-height: 1.8;
+    }
+
+    /* ===== NAVIGATION ===== */
+    nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      z-index: 100;
+      padding: 22px 48px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      transition: background 0.4s ease, padding 0.4s ease;
+    }
+
+    nav.scrolled {
+      background: rgba(247, 243, 238, 0.96);
+      backdrop-filter: blur(8px);
+      padding: 16px 48px;
+      box-shadow: 0 1px 0 rgba(0,0,0,0.06);
+    }
+
+    .nav-logo {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.4rem;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      color: var(--white);
+      text-decoration: none;
+      transition: color 0.4s;
+    }
+
+    nav.scrolled .nav-logo {
+      color: var(--text);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 40px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      font-size: 0.8rem;
+      letter-spacing: 0.1em;
+      color: rgba(255,255,255,0.9);
+      text-decoration: none;
+      transition: color 0.3s, opacity 0.3s;
+    }
+
+    nav.scrolled .nav-links a {
+      color: var(--text-light);
+    }
+
+    .nav-links a:hover {
+      opacity: 0.6;
+    }
+
+    /* ===== HAMBURGER ===== */
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      cursor: pointer;
+      padding: 4px;
+      background: none;
+      border: none;
+      z-index: 200;
+    }
+
+    .hamburger span {
+      display: block;
+      width: 24px;
+      height: 1.5px;
+      background: var(--white);
+      transition: background 0.4s, transform 0.3s, opacity 0.3s;
+    }
+
+    nav.scrolled .hamburger span {
+      background: var(--text);
+    }
+
+    .hamburger.open span:nth-child(1) {
+      transform: translateY(6.5px) rotate(45deg);
+    }
+    .hamburger.open span:nth-child(2) {
+      opacity: 0;
+    }
+    .hamburger.open span:nth-child(3) {
+      transform: translateY(-6.5px) rotate(-45deg);
+    }
+
+    /* ===== MOBILE MENU ===== */
+    .mobile-menu {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: var(--cream);
+      z-index: 150;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 40px;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+    }
+
+    .mobile-menu.open {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .mobile-menu a {
+      font-family: 'Noto Serif JP', serif;
+      font-size: 1.3rem;
+      font-weight: 400;
+      letter-spacing: 0.1em;
+      color: var(--text);
+      text-decoration: none;
+      transition: opacity 0.3s;
+    }
+
+    .mobile-menu a:hover {
+      opacity: 0.5;
+    }
+
+    /* ===== HERO ===== */
+    #hero {
+      position: relative;
+      height: 100vh;
+      min-height: 600px;
+      display: flex;
+      align-items: flex-end;
+      justify-content: flex-start;
+      padding: 0 80px 100px;
+      overflow: hidden;
+    }
+
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      background-image: url('images/hero.svg');
+      background-size: cover;
+      background-position: center 40%;
+      transform: scale(1.04);
+      transition: transform 8s ease;
+    }
+
+    #hero:hover .hero-bg {
+      transform: scale(1.0);
+    }
+
+    .hero-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        to top,
+        rgba(10, 8, 6, 0.70) 0%,
+        rgba(10, 8, 6, 0.30) 50%,
+        rgba(10, 8, 6, 0.15) 100%
+      );
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 1;
+    }
+
+    .hero-subtitle {
+      font-family: 'Noto Serif JP', serif;
+      font-size: 1rem;
+      color: rgba(255,255,255,0.8);
+      letter-spacing: 0.05em;
+      margin-bottom: 18px;
+      line-height: 1.9;
+    }
+
+    .hero-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(3.2rem, 7vw, 6rem);
+      font-weight: 300;
+      color: var(--white);
+      letter-spacing: 0.06em;
+      line-height: 1.1;
+      margin-bottom: 40px;
+    }
+
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 14px 32px;
+      background: rgba(255,255,255,0.12);
+      border: 1px solid rgba(255,255,255,0.5);
+      color: var(--white);
+      font-family: 'Noto Sans JP', sans-serif;
+      font-size: 0.82rem;
+      letter-spacing: 0.12em;
+      text-decoration: none;
+      transition: background 0.3s, border-color 0.3s;
+      backdrop-filter: blur(4px);
+    }
+
+    .btn-primary:hover {
+      background: rgba(255,255,255,0.22);
+      border-color: rgba(255,255,255,0.8);
+    }
+
+    .btn-primary .arrow {
+      transition: transform 0.3s;
+    }
+
+    .btn-primary:hover .arrow {
+      transform: translateX(4px);
+    }
+
+    /* ===== SECTION BASE ===== */
+    section {
+      padding: 120px 80px;
+    }
+
+    .section-label {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 0.85rem;
+      letter-spacing: 0.25em;
+      color: var(--accent);
+      text-transform: uppercase;
+      margin-bottom: 24px;
+    }
+
+    .section-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2rem, 4vw, 3.2rem);
+      font-weight: 400;
+      line-height: 1.25;
+      letter-spacing: 0.02em;
+    }
+
+    .divider {
+      width: 48px;
+      height: 1px;
+      background: var(--accent);
+      margin: 32px 0;
+    }
+
+    /* ===== MISSION ===== */
+    #mission {
+      background: var(--white);
+      text-align: center;
+    }
+
+    .mission-text {
+      max-width: 640px;
+      margin: 0 auto;
+    }
+
+    .mission-text .divider {
+      margin: 32px auto;
+    }
+
+    .mission-text p {
+      font-family: 'Noto Serif JP', serif;
+      font-size: 0.9rem;
+      color: var(--text-light);
+      line-height: 2.1;
+    }
+
+    /* ===== SERVICES ===== */
+    #services {
+      background: var(--cream);
+    }
+
+    .services-header {
+      text-align: center;
+      margin-bottom: 80px;
+    }
+
+    .services-header .section-title {
+      font-family: 'Noto Serif JP', serif;
+      font-size: 1.4rem;
+      font-weight: 400;
+    }
+
+    .services-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    .service-item {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      min-height: 400px;
+      overflow: hidden;
+    }
+
+    .service-item:nth-child(even) {
+      direction: rtl;
+    }
+
+    .service-item:nth-child(even) > * {
+      direction: ltr;
+    }
+
+    .service-image {
+      overflow: hidden;
+    }
+
+    .service-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.7s ease;
+    }
+
+    .service-item:hover .service-image img {
+      transform: scale(1.05);
+    }
+
+    .service-content {
+      background: var(--white);
+      padding: 64px 72px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .service-item:nth-child(2) .service-content {
+      background: var(--cream-dark);
+    }
+
+    .service-item:nth-child(3) .service-content {
+      background: var(--cream);
+    }
+
+    .service-name-en {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 2.4rem;
+      font-weight: 300;
+      letter-spacing: 0.15em;
+      color: var(--text);
+      line-height: 1.1;
+    }
+
+    .service-name-jp {
+      font-family: 'Noto Serif JP', serif;
+      font-size: 1.4rem;
+      font-weight: 400;
+      margin: 4px 0 6px;
+    }
+
+    .service-tag {
+      font-size: 0.75rem;
+      letter-spacing: 0.15em;
+      color: var(--accent);
+      margin-bottom: 24px;
+    }
+
+    .service-desc {
+      font-family: 'Noto Serif JP', serif;
+      font-size: 0.82rem;
+      color: var(--text-light);
+      line-height: 2.2;
+      max-width: 380px;
+    }
+
+    /* ===== TEAM ===== */
+    #team {
+      background: var(--white);
+      text-align: center;
+    }
+
+    .team-header {
+      margin-bottom: 72px;
+    }
+
+    .team-header .section-title {
+      font-family: 'Noto Serif JP', serif;
+      font-size: 1.4rem;
+      font-weight: 400;
+    }
+
+    .team-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 64px;
+      max-width: 960px;
+      margin: 0 auto;
+    }
+
+    .team-member {
+      text-align: left;
+    }
+
+    .member-photo {
+      width: 60%;
+      aspect-ratio: 3/4;
+      object-fit: cover;
+      object-position: top;
+      display: block;
+      margin-bottom: 28px;
+      filter: grayscale(15%);
+      transition: filter 0.4s;
+    }
+
+    .team-member:hover .member-photo {
+      filter: grayscale(0%);
+    }
+
+    .member-photo-placeholder {
+      width: 100%;
+      aspect-ratio: 3/4;
+      background: var(--cream-dark);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 28px;
+      color: var(--text-light);
+      font-size: 0.75rem;
+      letter-spacing: 0.1em;
+    }
+
+    .member-role {
+      font-size: 0.72rem;
+      letter-spacing: 0.2em;
+      color: var(--accent);
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+
+    .member-name-jp {
+      font-family: 'Noto Serif JP', serif;
+      font-size: 1.2rem;
+      font-weight: 500;
+      margin-bottom: 2px;
+    }
+
+    .member-name-en {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 0.95rem;
+      color: var(--text-light);
+      font-style: italic;
+      margin-bottom: 20px;
+    }
+
+    .member-bio {
+      font-family: 'Noto Serif JP', serif;
+      font-size: 0.78rem;
+      color: var(--text-light);
+      line-height: 2.1;
+    }
+
+    /* ===== CONTACT ===== */
+    #contact {
+      background: var(--cream);
+      max-width: none;
+    }
+
+    .contact-inner {
+      max-width: 680px;
+      margin: 0 auto;
+    }
+
+    .contact-header {
+      margin-bottom: 20px;
+    }
+
+    .contact-header .section-title {
+      font-family: 'Noto Serif JP', serif;
+      font-size: 1.4rem;
+      font-weight: 400;
+    }
+
+    .contact-email-note {
+      font-size: 0.78rem;
+      color: var(--text-light);
+      margin-bottom: 48px;
+    }
+
+    .contact-email-note a {
+      color: var(--accent);
+      text-decoration: none;
+    }
+
+    .form-group {
+      margin-bottom: 28px;
+    }
+
+    .form-group label {
+      display: block;
+      font-size: 0.75rem;
+      letter-spacing: 0.15em;
+      color: var(--text-light);
+      margin-bottom: 8px;
+    }
+
+    .form-group input,
+    .form-group textarea,
+    .form-group select {
+      width: 100%;
+      background: var(--white);
+      border: 1px solid var(--cream-dark);
+      padding: 14px 18px;
+      font-family: 'Noto Sans JP', sans-serif;
+      font-size: 0.85rem;
+      color: var(--text);
+      outline: none;
+      transition: border-color 0.3s;
+      appearance: none;
+    }
+
+    .form-group input:focus,
+    .form-group textarea:focus,
+    .form-group select:focus {
+      border-color: var(--accent);
+    }
+
+    .form-group textarea {
+      height: 160px;
+      resize: vertical;
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+
+    .btn-submit {
+      width: 100%;
+      padding: 18px;
+      background: var(--text);
+      color: var(--white);
+      border: none;
+      font-family: 'Noto Sans JP', sans-serif;
+      font-size: 0.82rem;
+      letter-spacing: 0.2em;
+      cursor: pointer;
+      transition: background 0.3s, opacity 0.3s;
+      margin-top: 8px;
+    }
+
+    .btn-submit:hover {
+      background: var(--accent);
+    }
+
+    /* ===== COMPANY INFO ===== */
+    #company {
+      background: var(--white);
+      text-align: center;
+    }
+
+    .company-inner {
+      max-width: 720px;
+      margin: 0 auto;
+    }
+
+    .company-header {
+      margin-bottom: 56px;
+    }
+
+    .company-header .section-title {
+      font-family: 'Noto Serif JP', serif;
+      font-size: 1.4rem;
+      font-weight: 400;
+    }
+
+    .company-table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+    }
+
+    .company-table tr {
+      border-bottom: 1px solid var(--cream-dark);
+    }
+
+    .company-table tr:first-child {
+      border-top: 1px solid var(--cream-dark);
+    }
+
+    .company-table th {
+      font-family: 'Noto Sans JP', sans-serif;
+      font-size: 0.75rem;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      color: var(--text-light);
+      padding: 20px 24px 20px 0;
+      width: 140px;
+      vertical-align: top;
+    }
+
+    .company-table td {
+      font-family: 'Noto Serif JP', serif;
+      font-size: 0.85rem;
+      color: var(--text);
+      padding: 20px 0;
+      line-height: 1.8;
+    }
+
+    /* ===== FOOTER ===== */
+    footer {
+      background: var(--text);
+      color: rgba(255,255,255,0.5);
+      padding: 48px 80px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .footer-logo {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.2rem;
+      font-weight: 400;
+      color: rgba(255,255,255,0.85);
+      letter-spacing: 0.1em;
+    }
+
+    .footer-copy {
+      font-size: 0.72rem;
+      letter-spacing: 0.08em;
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 32px;
+      list-style: none;
+    }
+
+    .footer-links a {
+      color: rgba(255,255,255,0.5);
+      text-decoration: none;
+      font-size: 0.75rem;
+      letter-spacing: 0.1em;
+      transition: color 0.3s;
+    }
+
+    .footer-links a:hover {
+      color: rgba(255,255,255,0.85);
+    }
+
+    /* ===== RESPONSIVE ===== */
+    @media (max-width: 900px) {
+      nav {
+        padding: 18px 28px;
+      }
+
+      nav.scrolled {
+        padding: 14px 28px;
+      }
+
+      .nav-links {
+        display: none;
+      }
+
+      .hamburger {
+        display: flex;
+      }
+
+      .mobile-menu {
+        display: flex;
+      }
+
+      section {
+        padding: 80px 28px;
+      }
+
+      #hero {
+        padding: 0 28px 80px;
+      }
+
+      #mission {
+        grid-template-columns: 1fr;
+        gap: 48px;
+      }
+
+      .mission-image img {
+        height: 320px;
+      }
+
+      .service-item,
+      .service-item:nth-child(even) {
+        grid-template-columns: 1fr;
+        direction: ltr;
+      }
+
+      .service-image {
+        height: 260px;
+      }
+
+      .service-content {
+        padding: 48px 32px;
+      }
+
+      .team-grid {
+        grid-template-columns: 1fr;
+        max-width: 440px;
+      }
+
+      .form-row {
+        grid-template-columns: 1fr;
+      }
+
+      footer {
+        flex-direction: column;
+        gap: 24px;
+        text-align: center;
+        padding: 48px 28px;
+      }
+
+      .footer-links {
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+    }
+
+    /* ===== SCROLL ANIMATIONS ===== */
+    .fade-up {
+      opacity: 0;
+      transform: translateY(28px);
+      transition: opacity 0.8s ease, transform 0.8s ease;
+    }
+
+    .fade-up.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .fade-up:nth-child(2) { transition-delay: 0.1s; }
+    .fade-up:nth-child(3) { transition-delay: 0.2s; }
+    .fade-up:nth-child(4) { transition-delay: 0.3s; }
+  </style>
+</head>
+<body>
+
+  <!-- MOBILE MENU -->
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="#mission" onclick="closeMenu()">私たちについて</a>
+    <a href="#services" onclick="closeMenu()">サービス</a>
+    <a href="#team" onclick="closeMenu()">メンバー紹介</a>
+    <a href="#contact" onclick="closeMenu()">お問い合わせ</a>
+    <a href="#company" onclick="closeMenu()">会社概要</a>
+  </div>
+
+  <!-- NAVIGATION -->
+  <nav id="navbar">
+    <a href="#" class="nav-logo">ShareLocals</a>
+    <ul class="nav-links">
+      <li><a href="#mission">私たちについて</a></li>
+      <li><a href="#services">サービス</a></li>
+      <li><a href="#team">メンバー紹介</a></li>
+      <li><a href="#contact">お問い合わせ</a></li>
+      <li><a href="#company">会社概要</a></li>
+    </ul>
+    <button class="hamburger" id="hamburger" onclick="toggleMenu()" aria-label="メニュー">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+  </nav>
+
+  <!-- HERO -->
+  <section id="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+      <p class="hero-subtitle">
+        地域と旅人が<br>
+        お互いを尊重し合える旅を当たり前に
+      </p>
+      <h1 class="hero-title">THE FUTURE<br>OF TRAVEL</h1>
+      <a href="#services" class="btn-primary">
+        体験を見る <span class="arrow">→</span>
+      </a>
+    </div>
+  </section>
+
+  <!-- MISSION -->
+  <section id="mission">
+    <div class="mission-text fade-up">
+      <p class="section-label">Our Mission</p>
+      <h2 class="section-title">Sharing Local Stories<br>Across the World</h2>
+      <div class="divider"></div>
+      <p>
+        私たちは、旅を通して地域と旅人をつなぎます。紡がれてきた文化や
+        生活への理解を広げ、お互いを尊重し合える旅を当たり前に。<br><br>
+        日本のローカルを世界へ、ひとりひとりのローカルを世界へ。
+        新しい旅の形によってローカル文化を紡いでいきます。
+      </p>
+    </div>
+  </section>
+
+  <!-- SERVICES -->
+  <section id="services">
+    <div class="services-header fade-up">
+      <p class="section-label">Services</p>
+      <h2 class="section-title">私たちのサービス</h2>
+      <div class="divider" style="margin: 24px auto;"></div>
+      <p style="font-family:'Noto Serif JP',serif; font-size:0.85rem; color:var(--text-light); max-width:560px; margin:0 auto; line-height:2.1;">
+        旅人と受け入れ地域側の相互承認による『予約〜体験』の一気通貫プラットフォーム。<br>
+        お互いを理解し尊重し合えるローカル体験の提供を目指します。
+      </p>
+    </div>
+
+    <div class="services-grid">
+
+      <!-- 三休 -->
+      <div class="service-item fade-up">
+        <div class="service-image">
+          <img
+            src="images/service1.svg"
+            alt="三休 SANKYU"
+            loading="lazy"
+          >
+        </div>
+        <div class="service-content">
+          <div class="service-name-en">SANKYU</div>
+          <div class="service-name-jp">三休</div>
+          <div class="service-tag">― 相互承認型予約サービス ―</div>
+          <p class="service-desc">
+            日本の文化・地域の暮らしに深く触れたい訪日旅行者のために、地域の旅館での滞在と
+            土地の営みに触れる体験をセットで提供。予約前のQ&A・プロフィール確認による承認制で、
+            宿と地域を守りながら質の高い滞在を担保します。
+          </p>
+        </div>
+      </div>
+
+      <!-- 連泊 -->
+      <div class="service-item fade-up">
+        <div class="service-image">
+          <img
+            src="images/service2.svg"
+            alt="連泊 RENPAKU"
+            loading="lazy"
+          >
+        </div>
+        <div class="service-content">
+          <div class="service-name-en">RENPAKU</div>
+          <div class="service-name-jp">連泊</div>
+          <div class="service-tag">― 連泊特化型予約サービス ―</div>
+          <p class="service-desc">
+            連泊しか予約できない設計だから、1泊あたりの料金は通常よりお得。
+            ファミリー層・ワーケーション層が腰を据えて地域を楽しむ滞在を実現します。
+            清掃プランの選択で削減分を宿泊料金に還元。
+          </p>
+        </div>
+      </div>
+
+      <!-- マーケティング -->
+      <div class="service-item fade-up">
+        <div class="service-image">
+          <img
+            src="images/service3.svg"
+            alt="成果報酬型マーケティング支援"
+            loading="lazy"
+          >
+        </div>
+        <div class="service-content">
+          <div class="service-name-en" style="font-size:1.6rem; letter-spacing:0.05em;">MARKETING</div>
+          <div class="service-name-jp">成果報酬型マーケティング支援</div>
+          <div class="service-tag">― 宿泊施設・地域事業者向け ―</div>
+          <p class="service-desc">
+            SNS・AIO運用による体験のコンテンツ化・発信で、地域と宿の認知拡大を支援。
+            初期費用を抑えた成果報酬型で、予約成立時のみ手数料が発生する無理のない導入設計。
+            清掃プラン・連泊割引・体験プログラムの設計支援まで一気通貫でサポートします。
+          </p>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- TEAM -->
+  <section id="team">
+    <div class="team-header fade-up">
+      <p class="section-label">Members</p>
+      <h2 class="section-title">メンバー紹介</h2>
+      <div class="divider" style="margin: 24px auto;"></div>
+    </div>
+
+    <div class="team-grid">
+
+      <div class="team-member fade-up">
+        <img class="member-photo" src="images/member-uemura.png" alt="植村 智幸">
+        <div class="member-role">共同創業者 / 代表</div>
+        <div class="member-name-jp">植村 智幸</div>
+        <div class="member-name-en">Tom Uemura</div>
+        <p class="member-bio">
+          『日本のカルチャーを、世界のカルチャーへ』をビジョンに、日本各地の土地文化を
+          海外とつなぐためShareLocalsを創業。国内外を旅し続ける中での出会いや経験、不満を起点に、
+          旅仲間たちのための事業開発に取り組む。
+        </p>
+      </div>
+
+      <div class="team-member fade-up">
+        <img class="member-photo" src="images/member-ito.png" alt="伊藤 恒徳">
+        <div class="member-role">共同創業者 / 副代表</div>
+        <div class="member-name-jp">伊藤 恒徳</div>
+        <div class="member-name-en">Hisanori Ito</div>
+        <p class="member-bio">
+          大学卒業後、アビームコンサルティングに入社。2019年に日本酒スタートアップ・WAKAZEに参画し、
+          2021年からは3年半フランス・パリに駐在。現地でのSAKE醸造から市場開拓まで、フランス事業を統括運営。
+          退職後に帰国し、同年10月に株式会社FJパートナーズを設立。日本企業のグローバル事業開発支援を手がける。
+          「日本のローカルと世界をつなぐ」ことを目指し、2026年7月、植村と共にShareLocalsを創業。
+        </p>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- CONTACT FORM -->
+  <section id="contact">
+    <div class="contact-inner">
+      <div class="contact-header fade-up">
+        <p class="section-label">Contact</p>
+        <h2 class="section-title">問い合わせフォーム</h2>
+        <div class="divider"></div>
+        <p class="contact-email-note">
+          お問い合わせ窓口：<a href="mailto:contact@sharelocals.info">contact@sharelocals.info</a>
+        </p>
+      </div>
+
+      <form class="fade-up" id="contactForm" onsubmit="handleSubmit(event)">
+        <div class="form-row">
+          <div class="form-group">
+            <label>お名前 *</label>
+            <input type="text" name="name" placeholder="山田 太郎" required>
+          </div>
+          <div class="form-group">
+            <label>会社名</label>
+            <input type="text" name="company" placeholder="株式会社○○">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>メールアドレス *</label>
+          <input type="email" name="email" placeholder="example@email.com" required>
+        </div>
+
+        <div class="form-group">
+          <label>お問い合わせ種別</label>
+          <select name="type">
+            <option value="">選択してください</option>
+            <option value="service">サービスについて</option>
+            <option value="partnership">パートナーシップ</option>
+            <option value="media">取材・メディア</option>
+            <option value="other">その他</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>お問い合わせ内容 *</label>
+          <textarea name="message" placeholder="お問い合わせ内容をご記入ください" required></textarea>
+        </div>
+
+        <button type="submit" class="btn-submit">送信する</button>
+      </form>
+    </div>
+  </section>
+
+  <!-- COMPANY INFO -->
+  <section id="company">
+    <div class="company-inner">
+      <div class="company-header fade-up">
+        <p class="section-label">About</p>
+        <h2 class="section-title">会社概要</h2>
+        <div class="divider" style="margin: 24px auto;"></div>
+      </div>
+
+      <table class="company-table fade-up">
+        <tr>
+          <th>会社名</th>
+          <td>株式会社ShareLocals</td>
+        </tr>
+        <tr>
+          <th>所在地</th>
+          <td>東京都渋谷区恵比寿西2-4-8<br>ウィンド恵比寿ビル8F</td>
+        </tr>
+        <tr>
+          <th>設立</th>
+          <td>2026年7月7日</td>
+        </tr>
+        <tr>
+          <th>代表</th>
+          <td>植村 智幸</td>
+        </tr>
+        <tr>
+          <th>事業内容</th>
+          <td>
+            相互承認型宿泊予約サービス「三休 SANKYU」の運営<br>
+            連泊特化型宿泊予約サービス「連泊 RENPAKU」の運営<br>
+            宿泊施設・地域事業者向け成果報酬型マーケティング支援
+          </td>
+        </tr>
+        <tr>
+          <th>お問い合わせ</th>
+          <td><a href="mailto:contact@sharelocals.info" style="color:var(--accent); text-decoration:none;">contact@sharelocals.info</a></td>
+        </tr>
+      </table>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-logo">ShareLocals</div>
+    <ul class="footer-links">
+      <li><a href="#mission">私たちについて</a></li>
+      <li><a href="#services">サービス</a></li>
+      <li><a href="#team">メンバー</a></li>
+      <li><a href="#contact">お問い合わせ</a></li>
+    </ul>
+    <p class="footer-copy">© 2026 株式会社ShareLocals. All rights reserved.</p>
+  </footer>
+
+  <script>
+    // Mobile menu
+    function toggleMenu() {
+      const menu = document.getElementById('mobileMenu');
+      const btn = document.getElementById('hamburger');
+      const isOpen = menu.classList.toggle('open');
+      btn.classList.toggle('open', isOpen);
+      document.body.style.overflow = isOpen ? 'hidden' : '';
+    }
+
+    function closeMenu() {
+      const menu = document.getElementById('mobileMenu');
+      const btn = document.getElementById('hamburger');
+      menu.classList.remove('open');
+      btn.classList.remove('open');
+      document.body.style.overflow = '';
+    }
+
+    // Navbar scroll effect
+    const navbar = document.getElementById('navbar');
+    window.addEventListener('scroll', () => {
+      navbar.classList.toggle('scrolled', window.scrollY > 60);
+    });
+
+    // Scroll animations
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+        }
+      });
+    }, { threshold: 0.12 });
+
+    document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+
+    // Form submission
+    function handleSubmit(e) {
+      e.preventDefault();
+      const btn = e.target.querySelector('.btn-submit');
+      btn.textContent = '送信しました ✓';
+      btn.style.background = 'var(--accent)';
+      btn.disabled = true;
+      setTimeout(() => {
+        e.target.reset();
+        btn.textContent = '送信する';
+        btn.style.background = '';
+        btn.disabled = false;
+      }, 3000);
+    }
+  </script>
+
+</body>
+</html>
