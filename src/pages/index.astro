@@ -372,7 +372,9 @@ const { hero, mission, services, services_intro, team, company } = content;
           お問い合わせ窓口：<a href={`mailto:${company.email}`}>{company.email}</a>
         </p>
       </div>
-      <form class="fade-up" id="contactForm" onsubmit="handleSubmit(event)">
+      <form class="fade-up" id="contactForm" name="contact" method="POST" data-netlify="true" netlify-honeypot="bot-field" onsubmit="handleSubmit(event)">
+        <input type="hidden" name="form-name" value="contact">
+        <p style="display:none;"><label>Don't fill this out if you're human: <input name="bot-field"></label></p>
         <div class="form-row">
           <div class="form-group">
             <label>お名前 *</label>
@@ -460,18 +462,31 @@ const { hero, mission, services, services_intro, team, company } = content;
       entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('visible'); });
     }, { threshold: 0.12 });
     document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+    function encodeFormData(form) {
+      return new URLSearchParams(new FormData(form)).toString();
+    }
     function handleSubmit(e) {
       e.preventDefault();
-      const btn = e.target.querySelector('.btn-submit');
-      btn.textContent = '送信しました ✓';
-      btn.style.background = 'var(--accent)';
+      const form = e.target;
+      const btn = form.querySelector('.btn-submit');
       btn.disabled = true;
-      setTimeout(() => {
-        e.target.reset();
-        btn.textContent = '送信する';
-        btn.style.background = '';
+      fetch('/', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: encodeFormData(form),
+      }).then(() => {
+        btn.textContent = '送信しました ✓';
+        btn.style.background = 'var(--accent)';
+        setTimeout(() => {
+          form.reset();
+          btn.textContent = '送信する';
+          btn.style.background = '';
+          btn.disabled = false;
+        }, 3000);
+      }).catch(() => {
+        btn.textContent = '送信に失敗しました';
         btn.disabled = false;
-      }, 3000);
+      });
     }
   </script>
 </Layout>
