@@ -332,8 +332,8 @@ const { hero, mission, services, services_intro, team, company } = content;
           </div>
           <div class="service-content">
             <div class="service-name-en">{s.name_en}</div>
-            <div class="service-name-jp">{s.name_jp}</div>
-            <div class="service-tag">― {s.tag} ―</div>
+            {s.name_jp && <div class="service-name-jp">{s.name_jp}</div>}
+            {s.tag && <div class="service-tag">― {s.tag} ―</div>}
             <p class="service-desc">{s.description}</p>
           </div>
         </div>
