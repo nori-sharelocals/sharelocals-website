@@ -321,8 +321,7 @@ const { hero, mission, services, services_intro, team, company } = content;
       <p class="section-label">Services</p>
       <h2 class="section-title">私たちのサービス</h2>
       <div class="divider" style="margin: 24px auto;"></div>
-      <p style="font-family:'Noto Serif JP',serif; font-size:0.85rem; color:var(--text-light); max-width:560px; margin:0 auto; line-height:2.1;">
-        {services_intro}
+      <p style="font-family:'Noto Serif JP',serif; font-size:0.85rem; color:var(--text-light); max-width:560px; margin:0 auto; line-height:2.1;" set:html={services_intro.replace(/\n/g, '<br>')}>
       </p>
     </div>
     <div class="services-grid">
