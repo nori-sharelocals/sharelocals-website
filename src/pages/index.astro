@@ -311,7 +311,7 @@ const { hero, mission, services, services_intro, team, company } = content;
       <p class="section-label">{mission.label}</p>
       <h2 class="section-title" set:html={mission.title.replace(/\n/g, '<br>')}></h2>
       <div class="divider"></div>
-      <p>{mission.body1}<br><br>{mission.body2}</p>
+      <p set:html={`${mission.body1.replace(/\n/g, '<br>')}<br><br>${mission.body2.replace(/\n/g, '<br>')}`}></p>
     </div>
   </section>
 
