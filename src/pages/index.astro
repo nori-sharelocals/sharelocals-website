@@ -421,7 +421,6 @@ const { hero, mission, services, services_intro, team, company } = content;
         <tr><th>所在地</th><td set:html={company.address.replace(/\n/g, '<br>')}></td></tr>
         <tr><th>設立</th><td>{company.founded}</td></tr>
         <tr><th>代表</th><td>{company.ceo}</td></tr>
-        <tr><th>事業内容</th><td set:html={company.services.replace(/\n/g, '<br>')}></td></tr>
         <tr><th>お問い合わせ</th><td><a href={`mailto:${company.email}`} style="color:var(--accent);text-decoration:none;">{company.email}</a></td></tr>
       </table>
     </div>
