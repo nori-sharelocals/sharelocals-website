@@ -328,7 +328,7 @@ const { hero, mission, services, services_intro, team, company } = content;
       {services.map((s) => (
         <div class="service-item fade-up">
           <div class="service-image">
-            <img src={s.image} alt={s.name_jp} loading="lazy">
+            <img src={s.image} alt={s.name_jp || s.name_en} loading="lazy">
           </div>
           <div class="service-content">
             <div class="service-name-en">{s.name_en}</div>
